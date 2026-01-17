@@ -13,6 +13,11 @@ app.get('/', (req, res) => {
   res.send('<h1>データベース接続テスト中...</h1>');
 });
 
+// サインアップ画面を表示する
+app.get('/signup', (req, res) => {
+    res.render('signup');
+});
+
 sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
