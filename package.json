@@ -16,7 +16,6 @@
     "url": "https://github.com/yutaroooooo/TripMate-app/issues"
   },
   "homepage": "https://github.com/yutaroooooo/TripMate-app#readme",
-  "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "ejs": "^4.0.1",
@@ -24,5 +23,6 @@
     "express-session": "^1.18.2",
     "mysql2": "^3.16.1",
     "sequelize": "^6.37.7"
-  }
+  },
+  "description": ""
 }
