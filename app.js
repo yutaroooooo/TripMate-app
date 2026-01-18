@@ -40,7 +40,7 @@ app.post('/signup', async (req, res) => {
             del_flg: 0 // 0:有効
         });
 
-        res.send('<h1>登録が完了しました！</h1><a href="/signup">戻</a>');
+        res.send('<h1>登録が完了しました！</h1><a href="/signup">戻る</a>');
     } catch (error) {
         console.error(error);
         res.send('<h1>エラーが発生しました</h1><p>そのメールアドレスは既に登録されている可能性があります。</p>');
