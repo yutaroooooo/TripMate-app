@@ -92,6 +92,16 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// 旅行一覧画面（ログイン後）
+app.get('/trips', (req, res) => {
+    // セッションにユーザー情報があるかチェック
+    if (!req.session.userId) {
+        return res.redirect('/login'); // ログインしてなければログイン画面へ
+    }
+    
+    res.send(`<h1>旅行一覧ページ（準備中）</h1><p>ようこそ、${req.session.username}さん。ログイン状態が維持されています！</p><a href="/login">戻る</a>`);
+});
+
 sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
