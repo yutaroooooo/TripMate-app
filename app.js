@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const express = require('express');
 const sequelize = require('./config/database');
 const User = require('./models/User');
+const session = require('express-session');
 
 const app = express();
 const port = 3000;
@@ -9,6 +10,12 @@ const port = 3000;
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(session({
+    secret: 'secret-key-tripmate',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 60 * 60 * 1000 }
+}));
 
 app.get('/', (req, res) => {
   res.send('<h1>データベース接続テスト中...</h1>');
@@ -50,6 +57,39 @@ app.post('/signup', async (req, res) => {
 // ログイン画面を表示する
 app.get('/login', (req, res) => {
     res.render('login');
+});
+
+// ログインの実行
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        // 1. DBからメールアドレスでユーザーを検索
+        const user = await User.findOne({ where: { email: email } });
+
+        // 2. ユーザーが存在しない場合
+        if (!user) {
+            return res.send('<script>alert("メールアドレスまたはパスワードが間違っています"); history.back();</script>');
+        }
+
+        // 3. パスワードの照合 (入力されたPW と DBのハッシュ化PW を比較)
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (isMatch) {
+            // セッションにユーザー情報を保存
+            req.session.userId = user.id;
+            req.session.username = user.username;
+
+            // ログイン成功後に旅行一覧（トップページ）へリダイレクト
+            res.redirect('/trips');
+        } else {
+            // パスワード不一致
+            res.send('<script>alert("メールアドレスまたはパスワードが間違っています"); history.back();</script>');
+        }
+    } catch (error) {
+        console.error(error);
+        res.send('エラーが発生しました');
+    }
 });
 
 sequelize.sync().then(() => {
