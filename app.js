@@ -2,7 +2,11 @@ const bcrypt = require('bcryptjs');
 const express = require('express');
 const sequelize = require('./config/database');
 const User = require('./models/User');
+const Trip = require('./models/Trip');
 const session = require('express-session');
+
+User.hasMany(Trip, { foreignKey: 'userId' });
+Trip.belongsTo(User, { foreignKey: 'userId' });
 
 const app = express();
 const port = 3000;
@@ -92,14 +96,95 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// 旅行一覧画面（ログイン後）
-app.get('/trips', (req, res) => {
-    // セッションにユーザー情報があるかチェック
+// ログアウト処理
+app.get('/logout', (req, res) => {
+    // セッションを破棄する
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('セッション破棄エラー:', err);
+        }
+        res.redirect('/login'); // ログイン画面へ戻す
+    });
+});
+
+// 旅行一覧画面
+app.get('/trips', async (req, res) => {
     if (!req.session.userId) {
-        return res.redirect('/login'); // ログインしてなければログイン画面へ
+        return res.redirect('/login');
     }
-    
-    res.send(`<h1>旅行一覧ページ（準備中）</h1><p>ようこそ、${req.session.username}さん。ログイン状態が維持されています！</p><a href="/login">戻る</a>`);
+
+    try {
+        // DBから自分が作成した旅行データをすべて取得
+        const trips = await Trip.findAll({
+            where: { 
+                userId: req.session.userId,
+                del_flg: 0 
+            },
+            order: [['createdAt', 'DESC']] // 新しい順に並べる
+        });
+
+        // EJSに旅行データ(trips)を渡す
+        res.render('trips', { 
+            username: req.session.username,
+            trips: trips
+        });
+    } catch (error) {
+        console.error(error);
+        res.send('エラーが発生しました');
+    }
+});
+
+// 新規旅行作成画面を表示
+app.get('/trip_create', (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+    res.render('trip_create', { username: req.session.username });
+});
+
+// 新規旅行作成の実行（DB保存）
+app.post('/trip_create', async (req, res) => {
+    const { title, start_date, end_date } = req.body;
+
+    // ログイン中のユーザーIDをセッションから取得
+    const userId = req.session.userId;
+
+    try {
+        // tripsテーブルにデータを新規登録
+        await Trip.create({
+            title: title,
+            start_date: start_date,
+            end_date: end_date,
+            userId: userId, // 誰の旅行か紐付け
+            del_flg: 0
+        });
+
+        // 保存後は旅行一覧画面へ戻る
+        res.redirect('/trips');
+    } catch (error) {
+        console.error('旅行作成エラー:', error);
+        res.send('<h1>旅行の作成に失敗しました</h1><a href="/trip_create">戻る</a>');
+    }
+});
+
+//旅行詳細画面
+app.get('/trip_detail/:id', async (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+    try {
+        const trip = await Trip.findByPk(req.params.id);
+        if (!trip || trip.userId !== req.session.userId) {
+            return res.redirect('/trips');
+        }
+        res.render('trip_detail', { 
+            username: req.session.username,
+            trip: trip 
+        });
+    } catch (error) {
+        console.error('詳細表示エラー:', error);
+        res.status(500).send('エラーが発生しました');
+    }
 });
 
 sequelize.sync().then(() => {
