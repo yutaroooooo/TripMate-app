@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= trip.title %> - 詳細 - TripMate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        :root { --primary-color: #007bff; }
+        .bg-light-blue { background-color: #f0f7ff; }
+        
+        /* PCサイズでマップを右側に固定する設定 */
+        @media (min-width: 992px) {
+            .sticky-column { position: sticky; top: 20px; height: calc(100vh - 40px); }
+            .scrollable-column { height: calc(100vh - 40px); overflow-y: auto; scrollbar-width: none; }
+            .scrollable-column::-webkit-scrollbar { display: none; }
+        }
+
+        /* マップエリアのスタイル */
+        .map-area { 
+            height: 100%; 
+            min-height: 400px; 
+            background-color: #e9ecef; 
+            border: 2px dashed #dee2e6; 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+        }
+
+        /* 新規スポット追加ボタン（FAB） */
+        .fab-btn { 
+            position: fixed; 
+            bottom: 30px; 
+            right: 30px; 
+            width: 75px; 
+            height: 75px; 
+            border-radius: 50%; 
+            z-index: 1050; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+        .fab-btn:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body class="bg-light">
+    <%- include('partials/header', { username: username }) %>
+
+    <div class="container-fluid px-4 py-4">
+        
+        <div class="row mb-4 align-items-center bg-white p-3 mx-0 rounded shadow-sm border border-primary-subtle">
+            <div class="col-md-8">
+                <h2 class="h4 mb-1 fw-bold text-dark"><%= trip.title %></h2>
+                <div class="text-muted">
+                    <span class="me-3"><i class="bi bi-calendar3"></i> <%= trip.start_date %> 〜 <%= trip.end_date %></span>
+                    <span class="text-primary"><i class="bi bi-people-fill"></i> 参加メンバー: <%= username %></span>
+                </div>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="/trip_edit/<%= trip.id %>" class="btn btn-outline-secondary btn-sm px-3 me-2">編集</a>
+                <button class="btn btn-outline-danger btn-sm px-3" onclick="confirmDelete()">削除</button>
+            </div>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-7 order-1 order-lg-2 sticky-column">
+                <div class="map-area shadow-sm">
+                    <div class="text-center text-muted">
+                        <i class="bi bi-geo-alt-fill display-6 text-danger opacity-25"></i>
+                        <h5 class="mt-2 fw-bold small">マップ・エリア</h5>
+                        <p style="font-size: 0.7rem;">Google Maps API 連携予定</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 order-2 order-lg-1 scrollable-column timeline-column">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white py-3 border-bottom">
+                        <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history me-2"></i>旅程タイムライン</h5>
+                    </div>
+                    <div class="card-body bg-light-blue">
+                        <div class="card mb-3 border-0 shadow-sm rounded-4">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="fw-bold mb-1 text-dark">東京スカイツリー（仮）</h6>
+                                        <p class="small text-muted mb-0"><i class="bi bi-geo-alt"></i> 10:00 - 12:00</p>
+                                    </div>
+                                    
+                                    <div class="d-flex flex-column gap-1" style="width: 80px;">
+                                        <div class="d-flex gap-1">
+                                            <button class="btn btn-outline-danger btn-sm w-100 p-1" title="Instagram">
+                                                <i class="bi bi-instagram"></i>
+                                            </button>
+                                            <button class="btn btn-primary btn-sm w-100 p-1" data-bs-toggle="collapse" data-bs-target="#chatArea1">
+                                                <i class="bi bi-chat-dots-fill"></i>
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="d-flex gap-1">
+                                            <button class="btn btn-outline-secondary btn-sm w-100 p-1" title="編集">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm w-100 p-1" title="削除">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="collapse mt-3" id="chatArea1">
+                                    <div class="bg-white rounded p-3 border">
+                                        <div class="chat-history mb-3 p-2 bg-light rounded" style="font-size: 0.85rem; height: 120px; overflow-y: auto;">
+                                            <div class="mb-2"><strong>チャットUI:</strong> まだ発言はありません。</div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label small fw-bold">メモ入力欄</label>
+                                            <textarea class="form-control form-control-sm" rows="3" placeholder="スポットに関する相談やメモを入力（最大500文字）"></textarea>
+                                        </div>
+                                        <button class="btn btn-primary btn-sm w-100 fw-bold">投稿</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center py-5">
+                            <p class="text-muted small">登録されたスポットがありません。<br>右下のボタンから追加してください。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <button class="btn btn-dark w-100 py-3 rounded-3 shadow fw-bold">
+                        <i class="bi bi-file-earmark-pdf me-2"></i>しおりPDF出力
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="/spot_add/<%= trip.id %>" class="btn btn-primary fab-btn shadow">
+        <i class="bi bi-plus-lg h3 mb-0"></i>
+        <span class="fw-bold" style="font-size: 0.65rem;">スポット追加</span>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 削除ボタンの確認ダイアログ
+        function confirmDelete() {
+            if (confirm('この旅行プランを削除してもよろしいですか？（この操作は取り消せません）')) {
+                alert('削除処理をシミュレートしました。');
+            }
+        }
+    </script>
+</body>
+</html>
