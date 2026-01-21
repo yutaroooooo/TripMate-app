@@ -57,7 +57,7 @@
             <div class="col-md-8">
                 <h2 class="h4 mb-1 fw-bold text-dark"><%= trip.title %></h2>
                 <div class="text-muted">
-                    <span class="me-3"><i class="bi bi-calendar3"></i> <%= trip.start_date %> 〜 <%= trip.end_date %></span>
+                    <span class="me-3"><i class="bi bi-calendar3"></i> <%= trip.start_date %> 〜 <%= trip.end_date %></span><br>
                     <span class="text-primary"><i class="bi bi-people-fill"></i> 参加メンバー: <%= username %></span>
                 </div>
             </div>
@@ -69,7 +69,13 @@
 
         <div class="row g-4">
 
-            <div class="col-lg-7 order-1 order-lg-2 sticky-column">
+            <div class="col-12 d-lg-none order-1">
+                <a href="/settlement/<%= trip.id %>" class="btn btn-warning w-100 py-3 rounded-3 shadow fw-bold">
+                    <i class="bi me-2"></i>精算管理
+                </a>
+            </div>
+
+            <div class="col-lg-7 order-2 order-lg-2 sticky-column">
                 <div class="map-area shadow-sm">
                     <div class="text-center text-muted">
                         <i class="bi bi-geo-alt-fill display-6 text-danger opacity-25"></i>
@@ -79,7 +85,14 @@
                 </div>
             </div>
 
-            <div class="col-lg-5 order-2 order-lg-1 scrollable-column timeline-column">
+            <div class="col-lg-5 order-3 order-lg-1 scrollable-column timeline-column">
+
+                <div class="d-none d-lg-block mb-3">
+                    <a href="/settlement/<%= trip.id %>" class="btn btn-warning w-100 py-3 rounded-3 shadow fw-bold">
+                        <i class="bi me-2"></i>精算管理
+                    </a>
+                </div>
+
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-white py-3 border-bottom">
                         <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history me-2"></i>旅程タイムライン</h5>
