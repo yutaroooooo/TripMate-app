@@ -1,0 +1,44 @@
+/* 旅行編集画面専用スタイル */
+.preview-container img {
+    width: 100%;
+    max-width: 400px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #dee2e6;
+    background-color: #f8f9fa;
+}
+
+.member-avatar {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    transition: transform 0.2s;
+}
+
+.member-item:hover .member-avatar {
+    transform: scale(1.1);
+}
+
+.btn-line {
+    background-color: #06C755;
+    color: white;
+    border: none;
+}
+
+.btn-line:hover {
+    background-color: #05b34c;
+    color: white;
+}
+
+/* 削除ボタン*/
+.member-item .btn-danger {
+    opacity: 0.8;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 10;
+}
+
+.member-item .btn-danger:hover {
+    opacity: 1;
+    transform: translate(5px, -5px) scale(1.2);
+}

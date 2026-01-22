@@ -187,6 +187,22 @@ app.get('/trip_detail/:id', async (req, res) => {
     }
 });
 
+//旅行情報編集画面
+app.get('/trip_edit/:id', async (req, res) => {
+    const tripId = req.params.id;
+
+    try {
+        const trip = { id: tripId, title: "テスト旅行", start_date: "2026-01-21", end_date: "2026-01-25" }; 
+
+        res.render('trip_edit', { 
+            trip: trip, 
+            username: req.session.username || "ゲストユーザー" 
+        });
+    } catch (error) {
+        res.status(500).send("エラーが発生しました");
+    }
+});
+
 sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
