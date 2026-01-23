@@ -96,6 +96,21 @@ app.post('/login', async (req, res) => {
     }
 });
 
+// パスワード再設定案内ページを表示する
+app.get('/pwd_reset', (req, res) => {
+    res.render('auth/pwd_reset');
+});
+
+// パスワード再設定フォームを表示
+app.get('/pwd_form', (req, res) => {
+    res.render('auth/pwd_form');
+});
+
+// パスワード再設定完了ページを表示
+app.get('/pwd_comp', (req, res) => {
+    res.render('auth/pwd_comp');
+});
+
 // ログアウト処理
 app.get('/logout', (req, res) => {
     // セッションを破棄する
