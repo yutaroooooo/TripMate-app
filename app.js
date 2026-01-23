@@ -122,6 +122,45 @@ app.get('/logout', (req, res) => {
     });
 });
 
+// 6. マイページ
+app.get('/mypage', (req, res) => {
+    const userData = {
+        name: "yutaroooooo",
+        profile_image: null,
+        login_id: "yutaroooooo"
+    };
+
+    const userTrips = [
+        { 
+            id: 1, 
+            title: "北海道卒業旅行", 
+            start_date: "2026/02/10", 
+            end_date: "2026/02/13" 
+        },
+        { 
+            id: 2, 
+            title: "週末の熱海温泉", 
+            start_date: "2026/03/05", 
+            end_date: "2026/03/06" 
+        }
+    ];
+
+    res.render('mypage', { 
+        user: userData, 
+        trips: userTrips 
+    });
+});
+
+// プロフィール編集画面
+app.get('/user_profile_edit', (req, res) => {
+    const userData = {
+        name: "yutaroooooo",
+        email: "example@mail.com",
+        profile_image: null
+    };
+    res.render('user_profile_edit', { user: userData });
+});
+
 // 旅行一覧画面
 app.get('/trips', async (req, res) => {
     if (!req.session.userId) {

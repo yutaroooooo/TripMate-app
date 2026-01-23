@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロフィール編集 - TripMate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/profile-edit.css">
+</head>
+<body class="bg-light">
+    <%- include('partials/header', { username: user.name }) %>
+
+    <main class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body p-4">
+                        <h2 class="h5 fw-bold mb-4 border-bottom pb-2">プロフィール編集</h2>
+                        
+                        <form action="/user_profile_edit" method="POST" enctype="multipart/form-data">
+                            <div class="text-center mb-4">
+                                <div class="profile-preview-wrapper mb-2">
+                                    <img id="profilePreview" src="<%= user.profile_image || 'https://ui-avatars.com/api/?name=' + user.name %>" 
+                                         class="rounded-circle border border-4 border-white shadow-sm">
+                                </div>
+                                <label for="profile_image" class="btn btn-light btn-sm border">
+                                    <i class="bi bi-camera me-1"></i>画像を選択
+                                </label>
+                                <input type="file" id="profile_image" name="profile_image" class="d-none" accept="image/*">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold">ユーザー名</label>
+                                <input type="text" name="name" class="form-control" value="<%= user.name %>" required>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label small fw-bold">メールアドレス</label>
+                                <input type="email" name="email" class="form-control" value="<%= user.email || '' %>" required>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary fw-bold">変更を保存</button>
+                                <a href="/mypage" class="btn btn-link text-muted text-decoration-none small">キャンセルして戻る</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/profile-edit.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+/* プロフィール画像のスタイル */
+.profile-img-wrapper img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.profile-img-wrapper img:hover {
+    transform: scale(1.03);
+}
+
+/* LINEカラー */
+.btn-line {
+    background-color: #06C755;
+    transition: background-color 0.2s ease;
+}
+
+.btn-line:hover {
+    background-color: #05b34c;
+}
+
+/* 旅行履歴のスクロール設定 */
+.history-scroll-area {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* PCサイズでの高さの最小設定 */
+@media (min-width: 992px) {
+    .col-lg-4 .card, .col-lg-8 .card {
+        min-height: 550px;
+    }
+}
