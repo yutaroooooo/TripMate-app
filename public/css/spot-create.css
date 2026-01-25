@@ -1,0 +1,12 @@
+/* PCサイズ高さ統一 */
+@media (min-width: 992px) {
+    #mapPreview {
+        height: 500px !important;
+    }
+}
+
+/* 地図のプレビューエリア */
+#mapPreview {
+    transition: background-color 0.3s;
+    border: 2px dashed #dee2e6;
+}

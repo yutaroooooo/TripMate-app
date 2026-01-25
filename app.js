@@ -257,6 +257,37 @@ app.get('/trip_edit/:id', async (req, res) => {
     }
 });
 
+//新規スポット追加画面
+app.get('/trips/:trip_id/spots/create', (req, res) => {
+    const loginUser = req.user || { name: "ゲストユーザー" }; 
+
+    res.render('spot_create', { 
+        trip: { id: req.params.trip_id },
+        username: loginUser.name
+    });
+});
+
+//予約・精算管理画面
+app.get('/trips/:trip_id/settlement', (req, res) => {
+    const user = req.user || { name: "ゲストユーザー" }; 
+
+    const trip = { id: req.params.trip_id, title: "北海道卒業旅行" };
+
+    const history = [
+        { id: 1, title: "レンタカー代", amount: 12000, payer: user.name, target: "全員" },
+        { id: 2, title: "昼食代", amount: 4500, payer: "メンバーA", target: "全員" }
+    ];
+
+    const summary = { from: "メンバーA", to: "あなた", total: 4500 };
+
+    res.render('settlement', { 
+        user,
+        trip,
+        history,
+        summary
+    });
+});
+
 sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);

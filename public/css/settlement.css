@@ -1,0 +1,31 @@
+@media (min-width: 992px) {
+    .row > div {
+        min-height: 600px;
+    }
+}
+
+.scroll-area {
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+}
+
+.summary-box {
+    background: rgba(255, 255, 255, 0.07);
+    transition: all 0.3s ease;
+}
+
+.summary-box:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.tracking-wider {
+    letter-spacing: 0.1rem;
+}
+
+.rounded-4 {
+    border-radius: 1.5rem;
+}
+
+.card {
+    border-radius: 12px;
+}

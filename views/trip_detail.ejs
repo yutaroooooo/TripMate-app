@@ -6,47 +6,7 @@
     <title><%= trip.title %> - 詳細 - TripMate</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <style>
-        :root { --primary-color: #007bff; }
-        .bg-light-blue { background-color: #f0f7ff; }
-        
-        /* PCサイズでマップを右側に固定する設定 */
-        @media (min-width: 992px) {
-            .sticky-column { position: sticky; top: 20px; height: calc(100vh - 40px); }
-            .scrollable-column { height: calc(100vh - 40px); overflow-y: auto; scrollbar-width: none; }
-            .scrollable-column::-webkit-scrollbar { display: none; }
-        }
-
-        /* マップエリアのスタイル */
-        .map-area { 
-            height: 100%; 
-            min-height: 400px; 
-            background-color: #e9ecef; 
-            border: 2px dashed #dee2e6; 
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-        }
-
-        /* 新規スポット追加ボタン（FAB） */
-        .fab-btn { 
-            position: fixed; 
-            bottom: 30px; 
-            right: 30px; 
-            width: 75px; 
-            height: 75px; 
-            border-radius: 50%; 
-            z-index: 1050; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
-        }
-        .fab-btn:hover { transform: scale(1.1); }
-    </style>
+    <link rel="stylesheet" href="/css/trip-detail.css">
 </head>
 <body class="bg-light">
     <%- include('partials/header', { username: username }) %>
@@ -70,7 +30,7 @@
         <div class="row g-4">
 
             <div class="col-12 d-lg-none order-1">
-                <a href="/settlement/<%= trip.id %>" class="btn btn-warning w-100 py-3 rounded-3 shadow fw-bold">
+                <a href="/trips/<%= trip.id %>/settlement" class="btn btn-warning w-100 py-3 rounded-3 shadow fw-bold">
                     <i class="bi me-2"></i>精算管理
                 </a>
             </div>
@@ -157,19 +117,12 @@
         </div>
     </div>
 
-    <a href="/spot_add/<%= trip.id %>" class="btn btn-primary fab-btn shadow">
+    <a href="/trips/<%= trip.id %>/spots/create" class="btn btn-primary fab-btn shadow">
         <i class="bi bi-plus-lg h3 mb-0"></i>
         <span class="fw-bold" style="font-size: 0.65rem;">スポット追加</span>
     </a>
 
+    <script src="/js/trip-detail.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // 削除ボタンの確認ダイアログ
-        function confirmDelete() {
-            if (confirm('この旅行プランを削除してもよろしいですか？（この操作は取り消せません）')) {
-                alert('削除処理をシミュレートしました。');
-            }
-        }
-    </script>
 </body>
 </html>

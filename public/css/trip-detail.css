@@ -1,0 +1,65 @@
+:root {
+    --primary-color: #007bff;
+    --light-blue: #f0f7ff;
+}
+
+.bg-light-blue {
+    background-color: var(--light-blue);
+}
+
+/* PCサイズレイアウト */
+@media (min-width: 992px) {
+    .sticky-column {
+        position: sticky;
+        top: 20px;
+        height: calc(100vh - 40px);
+    }
+    .scrollable-column {
+        height: calc(100vh - 40px);
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
+    .scrollable-column::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* マッププレビューエリア */
+.map-area {
+    height: 100%;
+    min-height: 400px;
+    background-color: #e9ecef;
+    border: 2px dashed #dee2e6;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 新規スポット追加ボタン */
+.fab-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.fab-btn:hover {
+    transform: scale(1.1);
+}
+
+/* タイムラインのカード */
+.timeline-card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-radius: 1rem;
+}
