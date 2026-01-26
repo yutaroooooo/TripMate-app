@@ -1,0 +1,17 @@
+.preview-container {
+    min-height: 600px;
+    overflow-y: auto;
+}
+
+.pdf-mock {
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1 / 1.414;
+    border: 1px solid #dee2e6;
+}
+
+@media (max-width: 991px) {
+    .preview-container {
+        min-height: 400px;
+    }
+}

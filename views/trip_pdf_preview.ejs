@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDFプレビュー - TripMate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/pdf-preview.css">
+</head>
+<body class="bg-light">
+    <%- include('partials/header', { username: user.name }) %>
+
+    <main class="container py-4">
+        <h2 class="h4 fw-bold mb-4">しおりPDFプレビュー</h2>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white py-3">
+                        <span class="small text-muted"><i class="bi bi-eye me-1"></i>出力イメージ</span>
+                    </div>
+                    <div class="card-body bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center preview-container">
+                        <div class="pdf-mock shadow-lg bg-white p-5">
+                            <h1 class="text-center mb-4"><%= trip.title %></h1>
+                            <hr>
+                            <div class="mb-3"><strong>日程:</strong> <%= trip.start_date %> 〜 <%= trip.end_date %></div>
+                            <div class="mb-5"><strong>参加者:</strong> <%= user.name %> ほか</div>
+                            <div class="timeline-placeholder border-start ps-3">
+                                <p class="small text-muted">旅程タイムライン</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 sticky-lg-top" style="top: 20px;">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold mb-3">デザイン選択</label>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="designTemplate" id="tpl1" checked>
+                                <label class="form-check-label" for="tpl1">シンプル・モダン</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="designTemplate" id="tpl2">
+                                <label class="form-check-label" for="tpl2">ポップ・カラフル</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="designTemplate" id="tpl3">
+                                <label class="form-check-label" for="tpl3">トラベル・ノート風</label>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-3">
+                            <button class="btn btn-primary btn-lg fw-bold py-3 shadow" id="pdfDownloadBtn">
+                                <i class="bi bi-file-earmark-pdf-fill me-2"></i>PDF出力実行
+                            </button>
+
+                            <a href="/trips/<%= trip.id %>" class="btn btn-outline-secondary py-2">
+                                <i class="bi bi-arrow-left me-1"></i>詳細へ戻る
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="/js/pdf-preview.js"></script>
+</body>
+</html>

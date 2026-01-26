@@ -288,6 +288,38 @@ app.get('/trips/:trip_id/settlement', (req, res) => {
     });
 });
 
+//しおりPDFプレビュー画面
+app.get('/trips/:trip_id/pdf_preview', (req, res) => {
+    const user = req.user || { name: "ゲストユーザー" };
+    const trip = { 
+        id: req.params.trip_id, 
+        title: "北海道卒業旅行",
+        start_date: "2026/02/01",
+        end_date: "2026/02/03"
+    };
+
+    res.render('trip_pdf_preview', { user, trip });
+});
+
+//エラー画面
+app.get('/error', (req, res) => {
+    const user = req.user || null;
+    
+    res.render('error', {
+        user: user,
+        errorTitle: "404 Not Found",
+        errorMessage: "お探しのページは見つかりませんでした。URLが間違っているか、削除された可能性があります。" // 仕様書②
+    });
+});
+
+app.use((req, res) => {
+    res.status(404).render('error', {
+        user: req.user || null,
+        errorTitle: "404 Not Found",
+        errorMessage: "システムエラーが発生しました。お手数ですがトップからやり直して下さい"
+    });
+});
+
 sequelize.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
