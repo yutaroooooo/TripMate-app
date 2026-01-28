@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>投稿詳細確認 - TripMate 管理者</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+    <%- include('partials/header', { username: user.name }) %>
+
+    <main class="container py-4">
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb small">
+                <li class="breadcrumb-item"><a href="/admin/monitoring">監視一覧</a></li>
+                <li class="breadcrumb-item active">投稿詳細確認</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white fw-bold py-3">投稿内容の確認</div>
+                    <div class="card-body">
+                        <div class="p-4 bg-light rounded mb-4">
+                            <p class="lead"><%= post.content %></p>
+                            <div class="text-center bg-dark rounded p-2 mt-3">
+                                <span class="text-white small">（画像プレビューエリア）</span>
+                            </div>
+                        </div>
+                        <div class="row small text-muted">
+                            <div class="col-6">投稿箇所：<%= post.trip_title %> / <%= post.spot_name %></div>
+                            <div class="col-6 text-end">投稿日時：<%= post.created_at %></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 border-top border-danger border-5">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">判定アクション</h5>
+                        <p class="small text-muted mb-4">投稿者：<strong><%= post.user_name %></strong></p>
+                        
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-warning fw-bold py-2">非表示にする</button>
+                            <button class="btn btn-danger fw-bold py-2">完全に削除する</button>
+                            <hr>
+                            <a href="/admin/monitoring" class="btn btn-outline-secondary">問題なし（一覧に戻る）</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

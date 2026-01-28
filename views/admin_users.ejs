@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ユーザー管理 - TripMate 管理者</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="bg-light">
+    <%- include('partials/header', { username: user.name }) %>
+
+    <main class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="input-group style-search">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                <input type="text" class="form-control border-start-0" placeholder="名前やメールで検索">
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th class="ps-4">ID</th>
+                                <th>名前</th>
+                                <th>メールアドレス</th>
+                                <th>状態 (有効/停止)</th>
+                                <th class="text-center pe-4">アクション</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% const users = [
+                                { id: 1, name: "ユーザーA", email: "userA@example.com", isActive: true },
+                                { id: 2, name: "ユーザーB", email: "userB@example.com", isActive: false }
+                            ]; %>
+                            <% users.forEach(targetUser => { %>
+                                <tr>
+                                    <td class="ps-4"><%= targetUser.id %></td>
+                                    <td class="fw-bold"><%= targetUser.name %></td>
+                                    <td class="text-muted"><%= targetUser.email %></td>
+                                    <td>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch" id="switch<%= targetUser.id %>" <%= targetUser.isActive ? 'checked' : '' %>>
+                                            <label class="form-check-label small" for="switch<%= targetUser.id %>">
+                                                <%= targetUser.isActive ? '有効' : '停止中' %>
+                                            </label>
+                                        </div>
+                                    </td>
+                                    <td class="text-center pe-4">
+                                        <a href="/admin/users/<%= targetUser.id %>" class="btn btn-outline-primary btn-sm px-3 rounded-pill shadow-sm">
+                                            詳細確認
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center pt-4 border-top">
+            <a href="/admin/monitoring" class="btn btn-outline-dark btn-lg px-5 py-3 rounded-3 shadow-sm">
+                投稿・スポット監視画面へ
+            </a>
+        </div>
+    </main>
+
+    <script src="/js/admin-users.js"></script>
+</body>
+</html>

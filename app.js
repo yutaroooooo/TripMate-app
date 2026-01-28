@@ -301,6 +301,73 @@ app.get('/trips/:trip_id/pdf_preview', (req, res) => {
     res.render('trip_pdf_preview', { user, trip });
 });
 
+//管理者：投稿・スポット監視画面
+app.get('/admin/monitoring', (req, res) => {
+    const currentUser = req.user || { name: "管理者ユーザー", isAdmin: true };
+
+    const posts = [
+        { id: 101, user: "ユーザーA", content: "不適切な内容が含まれている可能性があります。", date: "2026/01/27 10:00" },
+        { id: 102, user: "ユーザーB", content: "このスポットの画像が規約に抵触しているかもしれません。", date: "2026/01/27 09:45" }
+    ];
+
+    res.render('admin_monitoring', { 
+        user: currentUser,
+        posts: posts
+    });
+});
+
+//投稿詳細確認
+app.get('/admin/posts/:id', (req, res) => {
+    const currentUser = req.user || { name: "管理者ユーザー", isAdmin: true };
+    
+    const post = { 
+        id: req.params.id, 
+        content: "通報対象となっている不適切な内容のサンプルテキストです。", 
+        user_name: "ユーザーA", 
+        created_at: "2026/01/27 10:00", 
+        trip_title: "北海道卒業旅行", 
+        spot_name: "札幌時計台" 
+    };
+
+    res.render('admin_post_detail', { 
+        user: currentUser, 
+        post: post 
+    });
+});
+
+//管理者：ユーザー管理画面
+app.get('/admin/users', (req, res) => {
+    const currentUser = req.user || { name: "管理者ユーザー", isAdmin: true };
+    
+    const userList = [
+        { id: 1, name: "ユーザーA", email: "userA@example.com", isActive: true },
+        { id: 2, name: "ユーザーB", email: "userB@example.com", isActive: false },
+        { id: 3, name: "ユーザーC", email: "userC@example.com", isActive: true }
+    ];
+
+    res.render('admin_users', { 
+        user: currentUser,
+        users: userList
+    });
+});
+
+//ユーザー詳細
+app.get('/admin/users/:id', (req, res) => {
+    const currentUser = req.user || { name: "管理者ユーザー", isAdmin: true };
+    
+    const targetUser = { 
+        id: req.params.id, 
+        name: "ユーザーB", 
+        email: "userB@example.com", 
+        isActive: true 
+    };
+
+    res.render('admin_user_detail', { 
+        user: currentUser, 
+        targetUser: targetUser 
+    });
+});
+
 //エラー画面
 app.get('/error', (req, res) => {
     const user = req.user || null;

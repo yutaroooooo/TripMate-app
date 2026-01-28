@@ -1,0 +1,45 @@
+.card {
+    transition: transform 0.2s;
+    border-left: 5px solid #6c757d;
+}
+
+.card:hover {
+    transform: translateX(5px);
+}
+
+main {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.mt-auto-container {
+    margin-top: auto;
+}
+
+.style-search {
+    max-width: 300px;
+}
+
+.table th {
+    font-size: 0.85rem;
+    padding: 1rem !important;
+}
+
+.form-switch .form-check-input {
+    width: 2.5em;
+    height: 1.25em;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+@media (max-width: 576px) {
+    .btn-lg {
+        width: 100%;
+        font-size: 1rem;
+    }
+}
