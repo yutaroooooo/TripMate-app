@@ -1,0 +1,23 @@
+@media (min-width: 992px) {
+    .equal-height-row {
+        display: flex;
+        align-items: stretch;
+    }
+    .main-visual-container {
+        display: flex;
+    }
+    .main-visual {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0.5rem;
+    }
+}
+@media (max-width: 991px) {
+    .main-visual {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 0.5rem;
+    }
+}
