@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINE連携ガイド - TripMate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="bg-light py-5">
+    <div class="container" style="max-width: 500px;">
+        <div class="card shadow-sm border-0 p-4">
+            <div class="text-center mb-4">
+                <i class="bi bi-line text-success" style="font-size: 3rem;"></i>
+                <h2 class="h5 fw-bold mt-2">LINE連携の設定</h2>
+            </div>
+            
+            <div class="bg-white border rounded p-3 mb-4">
+                <p class="small fw-bold mb-2">連携手順：</p>
+                <ol class="small text-muted mb-0">
+                    <li>TripMate公式アカウントを友だち追加する</li>
+                    <li>LINE Developersで確認した「自分のユーザーID」をコピーする</li>
+                    <li>下のフォームに貼り付けて実行する</li>
+                </ol>
+            </div>
+
+            <form action="/auth/line/register" method="POST">
+                <div class="mb-3">
+                    <label class="form-label small fw-bold">あなたのLINEユーザーID</label>
+                    <input type="text" name="lineId" class="form-control form-control-lg" 
+                           placeholder="U...で始まるIDを入力" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100 fw-bold py-3 shadow-sm">
+                    連携を実行してメッセージを受け取る
+                </button>
+            </form>
+
+            <div class="text-center mt-4">
+                <a href="/mypage" class="text-muted small">キャンセルして戻る</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

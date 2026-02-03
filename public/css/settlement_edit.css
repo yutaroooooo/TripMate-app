@@ -1,0 +1,31 @@
+.container-full {
+    width: 100%;
+    max-width: 100%;
+    padding-right: var(--bs-gutter-x, 1rem);
+    padding-left: var(--bs-gutter-x, 1rem);
+}
+
+@media (max-width: 576px) {
+    .container-full {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+    }
+    
+    .card {
+        border-radius: 0;
+        margin-left: -0.5rem;
+        margin-right: -0.5rem;
+    }
+
+    .form-control-lg-mobile, .form-select-lg-mobile {
+        padding: 0.8rem;
+        font-size: 1.1rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .col-lg-5 {
+        width: 100%;
+        max-width: 800px;
+    }
+}

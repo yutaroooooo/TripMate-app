@@ -1,128 +1,298 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
     <title><%= trip.title %> - 詳細 - TripMate</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="/css/trip-detail.css">
-</head>
-<body class="bg-light">
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="/css/trip-detail.css" />
+  </head>
+
+  <body class="bg-light">
     <%- include('partials/header', { username: username }) %>
 
     <div class="container-fluid px-4 py-4">
-        
-        <div class="row mb-4 align-items-center bg-white p-3 mx-0 rounded shadow-sm border border-primary-subtle">
-            <div class="col-md-8">
-                <h2 class="h4 mb-1 fw-bold text-dark"><%= trip.title %></h2>
-                <div class="text-muted">
-                    <span class="me-3"><i class="bi bi-calendar3"></i> <%= trip.start_date %> 〜 <%= trip.end_date %></span><br>
-                    <span class="text-primary"><i class="bi bi-people-fill"></i> 参加メンバー: <%= username %></span>
-                </div>
-            </div>
-            <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                <a href="/trip_edit/<%= trip.id %>" class="btn btn-outline-secondary btn-sm px-3 me-2">編集</a>
-                <button class="btn btn-outline-danger btn-sm px-3" onclick="confirmDelete()">削除</button>
-            </div>
+      <div
+        class="row mb-4 align-items-center bg-white p-3 mx-0 rounded shadow-sm border border-primary-subtle"
+      >
+        <div class="col-md-8">
+          <h2 class="h4 mb-1 fw-bold text-dark">
+            <%= trip.title %>
+          </h2>
+
+          <div class="text-muted">
+            <span class="me-3">
+              <i class="bi bi-calendar3"></i>
+              <%= trip.start_date %> 〜 <%= trip.end_date %>
+            </span>
+            <br />
+            <span class="text-primary">
+              <i class="bi bi-people-fill"></i>
+              参加メンバー: <%= username %>
+            </span>
+          </div>
         </div>
 
-        <div class="row g-4">
+        <div class="col-md-4 text-md-end mt-2 mt-md-0">
+          <a
+            href="/trip_edit/<%= trip.id %>"
+            class="btn btn-outline-primary btn-sm px-3 me-2"
+          >
+            <i class="bi bi-pencil-square"></i> 編集
+          </a>
 
-            <div class="col-12 d-lg-none order-1">
-                <a href="/trips/<%= trip.id %>/settlement" class="btn btn-warning w-100 py-3 rounded-3 shadow fw-bold">
-                    <i class="bi me-2"></i>精算管理
-                </a>
+          <form
+            action="/trips/<%= trip.id %>/delete"
+            method="POST"
+            style="display: inline;"
+            onsubmit="return confirm('この旅行プランを削除してもよろしいですか？');"
+          >
+            <button
+              type="submit"
+              class="btn btn-outline-danger btn-sm px-3"
+            >
+              削除
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-12 d-lg-none order-1">
+          <a
+            href="/trips/<%= trip.id %>/settlement"
+            class="btn btn-warning w-100 py-3 rounded-3 shadow fw-bold"
+          >
+            精算管理
+          </a>
+        </div>
+
+        <div class="col-lg-7 order-2">
+          <div
+            class="map-area shadow-sm"
+            style="height: 500px; border-radius: 15px; overflow: hidden; position: relative;"
+          >
+            <div id="map" style="width: 100%; height: 100%;"></div>
+
+            <% if (trip.Spots && trip.Spots.length === 0) { %>
+              <div
+                class="h-100 w-100 d-flex flex-column align-items-center justify-content-center text-muted bg-white position-absolute top-0 start-0"
+              >
+                <i class="bi bi-geo-alt-fill display-6 text-danger opacity-25"></i>
+                <h5 class="mt-2 fw-bold small">マップ・エリア</h5>
+                <p style="font-size: 0.7rem;">
+                  スポットを追加すると地図が表示されます
+                </p>
+              </div>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="col-lg-5 order-3 order-lg-1 scrollable-column timeline-column">
+          <div class="d-none d-lg-block mb-3">
+            <a
+              href="/trips/<%= trip.id %>/settlement"
+              class="btn btn-warning w-100 py-3 rounded-3 shadow fw-bold"
+            >
+              精算管理
+            </a>
+          </div>
+
+          <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 border-bottom">
+              <h5 class="mb-0 fw-bold">
+                <i class="bi bi-clock-history me-2"></i>
+                旅程タイムライン
+              </h5>
             </div>
 
-            <div class="col-lg-7 order-2 order-lg-2 sticky-column">
-                <div class="map-area shadow-sm">
-                    <div class="text-center text-muted">
-                        <i class="bi bi-geo-alt-fill display-6 text-danger opacity-25"></i>
-                        <h5 class="mt-2 fw-bold small">マップ・エリア</h5>
-                        <p style="font-size: 0.7rem;">Google Maps API 連携予定</p>
-                    </div>
-                </div>
-            </div>
+            <div class="card-body bg-light-blue">
+              <% if (trip.Spots && trip.Spots.length > 0) { %>
+                <% trip.Spots.forEach((spot, index) => { %>
+                  <div class="card mb-3 border-0 shadow-sm rounded-4">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <h6 class="fw-bold mb-1 text-dark">
+                            <%= spot.name %>
+                          </h6>
 
-            <div class="col-lg-5 order-3 order-lg-1 scrollable-column timeline-column">
-
-                <div class="d-none d-lg-block mb-3">
-                    <a href="/trips/<%= trip.id %>/settlement" class="btn btn-warning w-100 py-3 rounded-3 shadow fw-bold">
-                        <i class="bi me-2"></i>精算管理
-                    </a>
-                </div>
-
-                <div class="card shadow-sm border-0 mb-4">
-                    <div class="card-header bg-white py-3 border-bottom">
-                        <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history me-2"></i>旅程タイムライン</h5>
-                    </div>
-                    <div class="card-body bg-light-blue">
-                        <div class="card mb-3 border-0 shadow-sm rounded-4">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div>
-                                        <h6 class="fw-bold mb-1 text-dark">東京スカイツリー（仮）</h6>
-                                        <p class="small text-muted mb-0"><i class="bi bi-geo-alt"></i> 10:00 - 12:00</p>
-                                    </div>
-                                    
-                                    <div class="d-flex flex-column gap-1" style="width: 80px;">
-                                        <div class="d-flex gap-1">
-                                            <button class="btn btn-outline-danger btn-sm w-100 p-1" title="Instagram">
-                                                <i class="bi bi-instagram"></i>
-                                            </button>
-                                            <button class="btn btn-primary btn-sm w-100 p-1" data-bs-toggle="collapse" data-bs-target="#chatArea1">
-                                                <i class="bi bi-chat-dots-fill"></i>
-                                            </button>
-                                        </div>
-                                        
-                                        <div class="d-flex gap-1">
-                                            <button class="btn btn-outline-secondary btn-sm w-100 p-1" title="編集">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </button>
-                                            <button class="btn btn-outline-danger btn-sm w-100 p-1" title="削除">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="collapse mt-3" id="chatArea1">
-                                    <div class="bg-white rounded p-3 border">
-                                        <div class="chat-history mb-3 p-2 bg-light rounded" style="font-size: 0.85rem; height: 120px; overflow-y: auto;">
-                                            <div class="mb-2"><strong>チャットUI:</strong> まだ発言はありません。</div>
-                                        </div>
-                                        <div class="mb-2">
-                                            <label class="form-label small fw-bold">メモ入力欄</label>
-                                            <textarea class="form-control form-control-sm" rows="3" placeholder="スポットに関する相談やメモを入力（最大500文字）"></textarea>
-                                        </div>
-                                        <button class="btn btn-primary btn-sm w-100 fw-bold">投稿</button>
-                                    </div>
-                                </div>
+                          <div class="small text-muted mb-1">
+                            <div class="mb-1">
+                              <i class="bi bi-calendar-event"></i>
+                              <%= spot.visit_date %>
                             </div>
+                            <div>
+                              <i class="bi bi-clock"></i>
+                              <%= spot.start_time %> 〜 <%= spot.end_time %>
+                            </div>
+                          </div>
+
+                          <p class="small text-muted mb-0">
+                            <i class="bi bi-geo-alt"></i>
+                            <%= spot.address %>
+                          </p>
                         </div>
 
-                        <div class="text-center py-5">
-                            <p class="text-muted small">登録されたスポットがありません。<br>右下のボタンから追加してください。</p>
+                        <div class="d-flex flex-column gap-1 flex-shrink-0" style="width: 80px;">
+                          <div class="d-flex gap-1">
+                            <a
+                              href="https://www.instagram.com/explore/tags/<%= encodeURIComponent(spot.name) %>/"
+                              target="_blank"
+                              class="btn btn-outline-danger btn-sm w-100 p-1"
+                              title="Instagramでハッシュタグ検索"
+                            >
+                              <i class="bi bi-instagram"></i>
+                            </a>
+
+                            <button
+                              class="btn btn-primary btn-sm w-100 p-1"
+                              data-bs-toggle="collapse"
+                              data-bs-target="#chatArea<%= index %>"
+                            >
+                              <i class="bi bi-chat-dots-fill"></i>
+                            </button>
+                          </div>
+
+                          <div class="d-flex gap-1">
+                            <a
+                              href="/spots/<%= spot.id %>/edit"
+                              class="btn btn-outline-secondary btn-sm w-100 p-1"
+                              title="編集"
+                            >
+                              <i class="bi bi-pencil-square"></i>
+                            </a>
+
+                            <form
+                              action="/spots/<%= spot.id %>/delete"
+                              method="POST"
+                              class="w-100"
+                              onsubmit="return confirm('このスポットを削除しますか？');"
+                            >
+                              <button
+                                type="submit"
+                                class="btn btn-outline-danger btn-sm w-100 p-1"
+                                title="削除"
+                              >
+                                <i class="bi bi-trash"></i>
+                              </button>
+                            </form>
+                          </div>
                         </div>
+                      </div>
+
+                      <div class="collapse mt-3" id="chatArea<%= index %>">
+                        <div class="bg-white rounded p-3 border shadow-sm">
+                          <label class="form-label small fw-bold text-secondary">
+                            メモ履歴
+                          </label>
+
+                          <div
+                            class="chat-history mb-3 p-3 bg-light rounded-4 border"
+                            style="font-size: 0.85rem; height: 180px; overflow-y: auto;"
+                          >
+                            <% if (spot.memo) { %>
+                              <% spot.memo.split('\n').forEach(line => { %>
+                                <% const parts = line.split('|'); %>
+                                <% if (parts.length >= 3) { %>
+                                  <div class="d-flex align-items-start mb-3">
+                                    <img
+                                      src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(parts[1]) %>&background=random&color=fff&size=32"
+                                      class="rounded-circle me-2 shadow-sm"
+                                      width="32"
+                                      height="32"
+                                    />
+
+                                    <div class="bg-white p-2 rounded-3 shadow-xs border">
+                                      <div class="fw-bold text-primary" style="font-size: 0.7rem;">
+                                        <%= parts[1] %>
+                                      </div>
+                                      <div><%= parts[2] %></div>
+                                    </div>
+                                  </div>
+                                <% } %>
+                              <% }); %>
+                            <% } else { %>
+                              <div class="text-center text-muted py-4">
+                                まだメモはありません
+                              </div>
+                            <% } %>
+                          </div>
+
+                          <form action="/spots/<%= spot.id %>/memo" method="POST">
+                            <textarea
+                              name="memo"
+                              class="form-control form-control-sm mb-2"
+                              rows="2"
+                              placeholder="持ち物、集合場所など自由に書き込もう！"
+                              required
+                            ></textarea>
+
+                            <button
+                              type="submit"
+                              class="btn btn-primary btn-sm w-100 fw-bold rounded-pill"
+                            >
+                              投稿する
+                            </button>
+                          </form>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                <% }); %>
+              <% } else { %>
+                <div class="text-center py-5">
+                  <p class="text-muted small">
+                    登録されたスポットがありません。
+                  </p>
                 </div>
-
-                <div class="mb-5">
-                    <a href="/trips/<%= trip.id %>/pdf_preview" class="btn btn-dark w-100 py-3 rounded-3 shadow fw-bold">
-                        <i class="bi bi-file-earmark-pdf me-2"></i>しおりPDF出力
-                    </a>
-                </div>
+              <% } %>
             </div>
-        </div>
-    </div>
+          </div>
 
-    <a href="/trips/<%= trip.id %>/spots/create" class="btn btn-primary fab-btn shadow">
-        <i class="bi bi-plus-lg h3 mb-0"></i>
-        <span class="fw-bold" style="font-size: 0.65rem;">スポット追加</span>
+          <div class="mb-5">
+            <a
+              href="/trips/<%= trip.id %>/pdf_preview"
+              class="btn btn-dark w-100 py-3 rounded-3 shadow fw-bold"
+            >
+              しおりPDF出力
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <a
+      href="/trips/<%= trip.id %>/spots/create"
+      class="btn btn-primary fab-btn shadow"
+    >
+      <i class="bi bi-plus-lg h3 mb-0"></i>
+      <span class="fw-bold" style="font-size: 0.65rem;">
+        スポット追加
+      </span>
     </a>
 
-    <script src="/js/trip-detail.js"></script>
+    <div
+      id="spots-data"
+      data-json='<%- JSON.stringify(trip.Spots || []) %>'
+    ></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script src="/js/trip-detail.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBiDR5uXN-6814XKEM48QIVbyD6PrQn32U&callback=initMap&libraries=places"
+      async
+      defer
+    ></script>
+  </body>
 </html>

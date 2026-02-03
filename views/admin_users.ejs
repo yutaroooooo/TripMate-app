@@ -13,10 +13,20 @@
 
     <main class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="input-group style-search">
-                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
-                <input type="text" class="form-control border-start-0" placeholder="名前やメールで検索">
-            </div>
+            <form action="/admin/users" method="GET" class="w-100">
+                <div class="input-group style-search">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                    <input type="text" name="search" class="form-control border-start-0" 
+                           placeholder="名前やメールで検索" value="<%= searchQuery %>">
+                    <button type="submit" class="btn btn-dark px-4">検索</button>
+                </div>
+                <% if (searchQuery) { %>
+                    <div class="mt-2 small text-muted">
+                        「<%= searchQuery %>」の検索結果: <%= users.length %> 件 
+                        <a href="/admin/users" class="ms-2 text-danger text-decoration-none">リセット</a>
+                    </div>
+                <% } %>
+            </form>
         </div>
 
         <div class="card shadow-sm border-0 mb-5">
@@ -33,20 +43,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% const users = [
-                                { id: 1, name: "ユーザーA", email: "userA@example.com", isActive: true },
-                                { id: 2, name: "ユーザーB", email: "userB@example.com", isActive: false }
-                            ]; %>
                             <% users.forEach(targetUser => { %>
                                 <tr>
                                     <td class="ps-4"><%= targetUser.id %></td>
-                                    <td class="fw-bold"><%= targetUser.name %></td>
-                                    <td class="text-muted"><%= targetUser.email %></td>
+                                    <td class="fw-bold"><%= targetUser.username %></td> <td class="text-muted"><%= targetUser.email %></td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" role="switch" id="switch<%= targetUser.id %>" <%= targetUser.isActive ? 'checked' : '' %>>
+                                            <input class="form-check-input" type="checkbox" role="switch" id="switch<%= targetUser.id %>" <%= targetUser.del_flg === 0 ? 'checked' : '' %>>
                                             <label class="form-check-label small" for="switch<%= targetUser.id %>">
-                                                <%= targetUser.isActive ? '有効' : '停止中' %>
+                                                <%= targetUser.del_flg === 0 ? '有効' : '停止中' %>
                                             </label>
                                         </div>
                                     </td>

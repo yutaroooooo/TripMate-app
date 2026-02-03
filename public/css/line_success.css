@@ -1,0 +1,47 @@
+.success-wrapper {
+    background-color: #ffffff;
+}
+
+.success-card {
+    width: 100%;
+    max-width: 450px;
+    border: none;
+    box-shadow: none;
+}
+
+.success-icon {
+    font-size: 6rem;
+    color: #198754;
+    margin-top: 2rem;
+}
+
+.btn-back-home {
+    border-radius: 12px;
+    padding: 16px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 576px) {
+    body, html {
+        height: 100%;
+        margin: 0;
+    }
+    
+    .success-wrapper {
+        align-items: center !important;
+        padding: 0;
+    }
+
+    .success-card {
+        width: 100% !important;
+        height: 100vh !important;
+        max-width: none !important;
+        border-radius: 0 !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 !important;
+        border: none;
+    }
+}

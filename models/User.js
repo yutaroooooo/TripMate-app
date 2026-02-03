@@ -7,7 +7,19 @@ const User = sequelize.define('User', {
   email: { type: DataTypes.STRING(100), allowNull: false, unique: true },
   password: { type: DataTypes.STRING(255), allowNull: false },
   line_user_id: { type: DataTypes.STRING(255), allowNull: true },
-  del_flg: { type: DataTypes.TINYINT, defaultValue: 0 }
+  del_flg: { type: DataTypes.TINYINT, defaultValue: 0 },
+  last_active_at: { 
+    type: DataTypes.DATE, 
+    allowNull: true 
+  },
+  profile_image: {
+    type: DataTypes.STRING(255),
+    allowNull: true
+  },
+  line_user_id: {
+    type: DataTypes.STRING,
+    allowNull: true
+}
 }, {
   tableName: 'users',
   timestamps: true,

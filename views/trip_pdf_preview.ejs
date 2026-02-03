@@ -3,70 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDFプレビュー - TripMate</title>
+    <title>旅のしおり - <%= trip.title %></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/css/pdf-preview.css">
 </head>
 <body class="bg-light">
-    <%- include('partials/header', { username: user.name }) %>
 
-    <main class="container py-4">
-        <h2 class="h4 fw-bold mb-4">しおりPDFプレビュー</h2>
+    <div class="container my-5">
+        <div class="text-end mb-4 no-print">
+            <button onclick="exportToPDF()" class="btn btn-dark shadow-sm px-4 fw-bold rounded-pill">
+                <i class="bi bi-printer-fill me-2"></i>PDFとして保存・印刷
+            </button>
+            <a href="/trip_detail/<%= trip.id %>" class="btn btn-outline-secondary shadow-sm px-4 rounded-pill">戻る</a>
+        </div>
 
-        <div class="row g-4">
-            <div class="col-lg-8">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-white py-3">
-                        <span class="small text-muted"><i class="bi bi-eye me-1"></i>出力イメージ</span>
+        <div class="bookmark-card shadow border-0">
+            <div class="text-center mb-5">
+                <p class="text-primary fw-bold mb-1 letter-spacing">TRIPMATE ITINERARY</p>
+                <h1 class="display-5 fw-bold bookmark-title text-start"><%= trip.title %></h1>
+                <p class="h5 text-muted mt-3">
+                    <i class="bi bi-calendar3"></i> <%= trip.start_date %> 〜 <%= trip.end_date %>
+                </p>
+            </div>
+
+            <div class="row g-5">
+                <div class="col-md-7">
+                    <h3 class="h5 fw-bold mb-4 border-bottom pb-2">SCHEDULE</h3>
+                    <div class="timeline-section">
+                        <% if (trip.Spots && trip.Spots.length > 0) { %>
+                            <% trip.Spots.forEach(spot => { %>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="fw-bold text-primary"><%= spot.start_time %></span>
+                                        <span class="small text-muted"><%= spot.visit_date %></span>
+                                    </div>
+                                    <div class="h6 fw-bold mb-1 text-dark"><%= spot.name %></div>
+                                    <div class="small text-muted mb-2"><%= spot.address %></div>
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            <p class="text-muted small">予定が登録されていません</p>
+                        <% } %>
                     </div>
-                    <div class="card-body bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center preview-container">
-                        <div class="pdf-mock shadow-lg bg-white p-5">
-                            <h1 class="text-center mb-4"><%= trip.title %></h1>
-                            <hr>
-                            <div class="mb-3"><strong>日程:</strong> <%= trip.start_date %> 〜 <%= trip.end_date %></div>
-                            <div class="mb-5"><strong>参加者:</strong> <%= user.name %> ほか</div>
-                            <div class="timeline-placeholder border-start ps-3">
-                                <p class="small text-muted">旅程タイムライン</p>
-                            </div>
-                        </div>
+                </div>
+
+                <div class="col-md-5">
+                    <h3 class="h5 fw-bold mb-4 border-bottom pb-2">MEMO & ITEMS</h3>
+                    <div class="p-3 mb-4 bg-light rounded-3">
+                        <p class="small fw-bold text-primary mb-2">共通メモ</p>
+                        <div class="small" style="white-space: pre-wrap;"><%= trip.memo || "特になし" %></div>
+                    </div>
+                    
+                    <div class="border p-3 rounded-3">
+                        <p class="small fw-bold text-secondary mb-2">チェックリスト</p>
+                        <ul class="list-unstyled item-check-list mb-0">
+                            <% if (trip.items) { %>
+                                <% trip.items.split(/\r?\n/).forEach(item => { %>
+                                    <% if (item.trim()) { %>
+                                        <li><i class="bi bi-square me-2"></i><%= item.trim() %></li>
+                                    <% } %>
+                                <% }); %>
+                            <% } else { %>
+                                <li class="text-muted small">項目がありません</li>
+                            <% } %>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-4">
-                <div class="card shadow-sm border-0 sticky-lg-top" style="top: 20px;">
-                    <div class="card-body">
-                        <div class="mb-4">
-                            <label class="form-label fw-bold mb-3">デザイン選択</label>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="designTemplate" id="tpl1" checked>
-                                <label class="form-check-label" for="tpl1">シンプル・モダン</label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="designTemplate" id="tpl2">
-                                <label class="form-check-label" for="tpl2">ポップ・カラフル</label>
-                            </div>
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="designTemplate" id="tpl3">
-                                <label class="form-check-label" for="tpl3">トラベル・ノート風</label>
-                            </div>
-                        </div>
-
-                        <div class="d-grid gap-3">
-                            <button class="btn btn-primary btn-lg fw-bold py-3 shadow" id="pdfDownloadBtn">
-                                <i class="bi bi-file-earmark-pdf-fill me-2"></i>PDF出力実行
-                            </button>
-
-                            <a href="/trips/<%= trip.id %>" class="btn btn-outline-secondary py-2">
-                                <i class="bi bi-arrow-left me-1"></i>詳細へ戻る
-                            </a>
-                        </div>
-                    </div>
-                </div>
+            <div class="text-center mt-5 pt-5 border-top text-muted small">
+                Generated by TripMate app - Have a safe and wonderful trip!
             </div>
         </div>
-    </main>
+    </div>
 
     <script src="/js/pdf-preview.js"></script>
 </body>

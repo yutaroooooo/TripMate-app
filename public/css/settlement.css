@@ -1,9 +1,3 @@
-@media (min-width: 992px) {
-    .row > div {
-        min-height: 600px;
-    }
-}
-
 .scroll-area {
     max-height: calc(100vh - 250px);
     overflow-y: auto;

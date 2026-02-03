@@ -1,13 +1,71 @@
-.preview-container {
-    min-height: 600px;
-    overflow-y: auto;
+/* しおり風の装飾 */
+.bookmark-card {
+    background-color: white;
+    padding: 60px;
+    border-radius: 20px;
 }
 
-.pdf-mock {
-    width: 100%;
-    max-width: 500px;
-    aspect-ratio: 1 / 1.414;
-    border: 1px solid #dee2e6;
+.bookmark-title {
+    border-left: 8px solid #0d6efd;
+    padding-left: 20px;
+    display: inline-block;
+}
+
+/* タイムラインのデザイン */
+.timeline-section {
+    position: relative;
+    border-left: 2px dashed #0d6efd;
+    margin-left: 20px;
+    padding-left: 30px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -37px;
+    top: 5px;
+    width: 14px;
+    height: 14px;
+    background: #0d6efd;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px #0d6efd;
+}
+
+/* メモボックス */
+.memo-area {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    border-left: 5px solid #dee2e6;
+}
+
+.item-check-list li {
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+/* 印刷時の設定 */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    body {
+        background-color: white !important;
+        padding: 0 !important;
+    }
+    .container {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+    }
+    .bookmark-card {
+        padding: 20px !important;
+        border: none !important;
+    }
 }
 
 @media (max-width: 991px) {
