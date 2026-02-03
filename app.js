@@ -11,15 +11,20 @@ const session = require('express-session');
 const multer = require('multer');
 const path = require('path');
 const line = require('@line/bot-sdk');
+require('dotenv').config();
 
 // --- LINE設定 ---
 const lineConfig = {
-    channelAccessToken: '+EY4ALOyZYNnhovgNvfXDGNpwz6G0xdRI3Sw1JVFDqsfLVFae/935r18JOhz+BPzwwIWgxyh6eE3weQztPrO+ofANijyVv608oD0xg+xD3o3UzrebUPaNADRj8c5QNsrmwXEyavRslb9OoKzg1IxQwdB04t89/1O/w1cDnyilFU=', 
-    channelSecret: '74b1381400a0c6799e9dbe2229e93387'
+    channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
+    channelSecret: process.env.LINE_CHANNEL_SECRET
 };
+
 const client = new line.Client(lineConfig);
-const LINE_LOGIN_ID = '2009030039';
-const LINE_LOGIN_SECRET = '63bca9646798df7d3ee887221b75e05d';
+
+const LINE_LOGIN_ID = '2009030039'; 
+
+const LINE_LOGIN_SECRET = process.env.LINE_LOGIN_SECRET;
+
 const CALLBACK_URL = 'https://semiskilled-ute-trichoid.ngrok-free.dev/auth/line/callback';
 
 User.hasMany(Trip, { foreignKey: 'userId' });
