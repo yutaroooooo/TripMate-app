@@ -1,24 +1,67 @@
-@media (min-width: 992px) {
-    .equal-height-row {
-        display: flex;
-        align-items: stretch;
-    }
-    .main-visual-container {
-        display: flex;
-    }
-    .main-visual {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 0.5rem;
-    }
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow-x: hidden;
 }
 
+.signup-wrapper {
+    display: flex;
+    min-height: 100vh;
+    width: 100vw;
+}
+
+/* 画像エリア */
+.signup-visual {
+    flex: 1;
+    display: block;
+    background-color: #000;
+}
+
+.signup-visual img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    object-position: left;
+}
+
+/* フォームエリア */
+.signup-form-area {
+    flex: 0 0 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background-color: #fff;
+}
+
+.signup-form-inner {
+    width: 100%;
+    max-width: 400px;
+}
+
+/* 入力フォーム */
+.form-control-lg {
+    font-size: 1rem;
+}
+
+/* --- レスポンシブ対応 --- */
 @media (max-width: 991px) {
-    .main-visual {
+    .signup-wrapper {
+        flex-direction: column;
+    }
+
+    .signup-visual {
+        flex: none;
+        height: 25vh;
+    }
+
+    .signup-visual img {
+        height: 100%;
+    }
+
+    .signup-form-area {
+        flex: 1;
         width: 100%;
-        height: 250px;
-        object-fit: cover;
-        border-radius: 0.5rem;
+        padding: 30px 20px;
     }
 }
