@@ -39,34 +39,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 精算リマインドボタン（LINE通知）
     const remindBtn = document.getElementById('remindBtn');
-    if (remindBtn) {
-        remindBtn.addEventListener('click', () => {
-            const summaryContainer = document.querySelector('.summary-box');
-            const blocks = summaryContainer.querySelectorAll('.mb-3');
-
-            if (blocks.length === 0) return alert("精算データが現在ありません");
-
-            let message = "【TripMate精算通知】\n今回の旅行の精算結果です！\n----------------\n";
-            
-            blocks.forEach(block => {
-                const textContent = block.innerText.trim().split('\n');
+    if (remindBtn) {remindBtn.addEventListener('click', () => {
+        const summaryContainer = document.querySelector('.summary-box');
+        const blocks = summaryContainer.querySelectorAll('.mb-3');
+        
+        if (blocks.length === 0) return alert("精算データが現在ありません");
+        let message = "【TripMate精算通知】\n今回の旅行の精算結果です！\n----------------\n";
+        blocks.forEach(block => {
+            const textContent = block.innerText.trim().split('\n');
+            if (textContent.length >= 2) {
+                const nameLine = textContent[0];
+                const amount = textContent[1];
+                const names = nameLine.split(/[→\s]+/);
+                const fromUser = names[0].trim();
+                const toUser = names[names.length - 1].trim();
                 
-                if (textContent.length >= 2) {
-                    const nameLine = textContent[0];
-                    const amount = textContent[1];
-                    const names = nameLine.split(/[→\s]+/);
-                    const fromUser = names[0].trim();
-                    const toUser = names[names.length - 1].trim();
+                message += `✅${fromUser}さんが\n👉${toUser}さんへ\n💸${amount}支払う\n`;
+                message += "----------------\n";
 
-                    message += `${fromUser}さんが\n${toUser}さんに\n${amount}\n`;
-                    message += "----------------\n";
-                }
-            });
+}
 
-            const lineUrl = `https://line.me/R/msg/text/?${encodeURIComponent(message)}`;
-            window.open(lineUrl, '_blank');
-        });
-    }
+});
+
+        message += "内容を確認して精算を完了させてね！✨";
+
+        const lineUrl = "https://line.me/R/msg/text/?" + encodeURIComponent(message);
+        
+        window.open(lineUrl, '_blank');
+    });
+}
 
     // 対象者選択（個別指定）の表示切り替え
     const targetTypeSelect = document.getElementById('targetTypeSelect');

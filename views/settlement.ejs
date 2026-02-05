@@ -56,7 +56,7 @@
                                 <input type="text" name="title" class="form-control form-control-sm shadow-sm mb-2" placeholder="例：レンタカー代" required>
                                 <div class="row g-1">
                                     <div class="col-7">
-                                        <input type="number" step="0.01" name="original_amount" class="form-control form-control-sm shadow-sm" placeholder="例：1000" required>
+                                        <input type="number" name="original_amount" class="form-control form-control-sm shadow-sm" placeholder="例：1000" required>
                                     </div>
                                     <div class="col-5">
                                         <input class="form-control form-control-sm shadow-sm" list="currencyOptions" name="currency" placeholder="通貨検索" required>
@@ -99,9 +99,6 @@
                                 <i class="bi bi-save me-1"></i>登録する
                             </button>
                         
-                            <button type="button" class="btn btn-outline-success btn-sm fw-bold py-2 shadow-sm" id="remindBtn">
-                                <i class="bi bi-line me-1"></i>精算リマインド
-                            </button>
                         </div>
                         </form>
                     </div>
@@ -130,10 +127,10 @@
                                         <div class="d-flex justify-content-between align-items-start mb-1">
                                             <span class="fw-bold"><%= item.title %></span>
                                             <div class="text-end">
-                                                <div class="fw-bold text-primary">¥<%= item.amount.toLocaleString() %></div>
+                                                <div class="fw-bold text-primary">¥<%= Math.round(item.amount).toLocaleString() %></div>
                                                 <% if (item.currency !== 'JPY') { %>
                                                     <div class="small text-muted" style="font-size: 0.7rem;">
-                                                        (<%= item.original_amount.toLocaleString() %> <%= item.currency %>)
+                                                        (<%= Math.round(item.original_amount).toLocaleString() %> <%= item.currency %>)
                                                     </div>
                                                 <% } %>
                                             </div>
@@ -204,6 +201,12 @@
                             <% } else { %>
                                 <div class="text-muted small py-4">貸し借りは現在ありません</div>
                             <% } %>
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="button" class="btn btn-success btn-sm fw-bold py-3 shadow-sm rounded-pill" id="remindBtn">
+                                <i class="bi bi-line me-2"></i>LINEで精算結果を通知
+                            </button>
                         </div>
                         
                         <div class="mt-2 small text-secondary">

@@ -20,6 +20,19 @@
     border-radius: 1.5rem;
 }
 
+.fixed-card-height {
+    height: 550px !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.fixed-card-height .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 中身を上下中央に配置して余白の違和感を無くす */
+}
+
 .card {
     border-radius: 12px;
 }

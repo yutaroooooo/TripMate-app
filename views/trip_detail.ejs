@@ -37,10 +37,25 @@
               <%= trip.start_date %> 〜 <%= trip.end_date %>
             </span>
             <br />
-            <span class="text-primary">
-              <i class="bi bi-people-fill"></i>
-              参加メンバー: <%= username %>
-            </span>
+            <span>参加メンバー:</span>
+    
+    <span class="d-inline-flex align-items-center bg-white border rounded-pill px-2 shadow-sm" style="height: 22px; border-color: #dee2e6 !important;">
+        <img src="<%= trip.Owner && trip.Owner.profile_image ? trip.Owner.profile_image : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(trip.Owner ? trip.Owner.username : username) + '&background=random' %>" 
+             class="rounded-circle me-1" style="width:14px; height:14px; object-fit: cover;">
+        <span style="font-size: 0.7rem; color: #333;"><%= trip.Owner ? trip.Owner.username : username %></span>
+    </span>
+
+    <% if (trip.Members && trip.Members.length > 0) { %>
+        <% trip.Members.forEach(member => { %>
+            <% if (trip.Owner && member.id !== trip.Owner.id) { %>
+                <span class="d-inline-flex align-items-center bg-white border rounded-pill px-2 shadow-sm" style="height: 22px; border-color: #dee2e6 !important;">
+                    <img src="<%= member.profile_image ? member.profile_image : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(member.username) + '&background=random' %>" 
+                         class="rounded-circle me-1" style="width:14px; height:14px; object-fit: cover;">
+                    <span style="font-size: 0.7rem; color: #333;"><%= member.username %></span>
+                </span>
+            <% } %>
+        <% }) %>
+    <% } %>
           </div>
         </div>
 
